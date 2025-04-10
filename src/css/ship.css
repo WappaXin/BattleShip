@@ -1,0 +1,27 @@
+.myGrid1Ship41 , .myGrid2Ship41 {
+    height: 200px;
+    width: 50px;
+    border: 2px solid rgb(0, 0, 107);
+    position: absolute;
+}
+
+.myGrid1Ship31 , .myGrid1Ship32 , .myGrid2Ship31 , .myGrid2Ship32{
+    height: 50px;
+    width: 150px;
+    border: 2px solid rgb(0, 0, 107);
+    position: absolute;
+}
+
+.myGrid1Ship21 , .myGrid1Ship22 , .myGrid1Ship23 , .myGrid2Ship21 , .myGrid2Ship22 ,.myGrid1Ship23{ 
+    height: 100px;
+    width: 50px;
+    border: 2px solid rgb(0, 0, 107);
+    position: absolute;
+}
+
+.myGrid1Ship11 , .myGrid1Ship12 , .myGrid1Ship13 , .myGrid1Ship14 , .myGrid2Ship11 , .myGrid2Ship12 ,.myGrid2Ship13 , .myGrid2Ship14{ 
+    height: 50px;
+    width: 50px;
+    border: 2px solid rgb(0, 0, 107);
+    position: absolute;
+}
