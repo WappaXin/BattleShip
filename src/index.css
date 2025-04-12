@@ -22,6 +22,10 @@ body{
     width: 50%;
 }
 
+.details{
+    padding: 10px;
+}
+
 .grids{
     display: flex;
     flex-direction: row;
@@ -34,8 +38,8 @@ body{
     flex: 0 0 auto;
     margin: 12px;
     display: grid;
-    grid-template-columns: repeat(10 , 1fr);
-    grid-template-rows: repeat(10 , 1fr);
+    grid-template-columns: repeat(10 , 50px);
+    grid-template-rows: repeat(10 , 50px);
 }
 
 .myGrid1 , .myGrid2{
@@ -44,4 +48,15 @@ body{
 }
 .opponentGrid1 , .opponentGrid2 {
     border: 2px solid red;
+}
+
+#player1PlayBtn , #player2PlayBtn{
+    font-size: 1.5rem;
+    padding: 0.2rem 0.5rem;
+    margin-top: 5px;
+}
+
+.details > p{
+    font-size: 1.2rem;
+    margin-top: 20px;
 }
