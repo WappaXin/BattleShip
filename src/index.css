@@ -33,19 +33,20 @@ body{
 }
 
 .myGrid1 , .opponentGrid1 , .myGrid2 , .opponentGrid2{
-    height: 500px;
-    width: 500px;
+    height: 400px;
+    width: 400px;
     flex: 0 0 auto;
     margin: 12px;
     display: grid;
-    grid-template-columns: repeat(10 , 50px);
-    grid-template-rows: repeat(10 , 50px);
+    grid-template-columns: repeat(10 , 40px);
+    grid-template-rows: repeat(10 , 40px);
 }
 
 .myGrid1 , .myGrid2{
-    border: 2px solid blue;
+    border: 1px solid blue;
     position: relative;
 }
+
 .opponentGrid1 , .opponentGrid2 {
     border: 2px solid red;
 }

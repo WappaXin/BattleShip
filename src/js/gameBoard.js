@@ -46,8 +46,4 @@ export class GameBoard{
         this.ships[index].co_ordinates;
 
     }
-
-    fillShipsInBoard(){
-
-    }
 }
