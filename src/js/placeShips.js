@@ -1,11 +1,12 @@
 export class PlaceShips{
-    
+
     constructor(playerGrid){
         this.playerGrid = playerGrid;
         this.gridSize = 40;
         this.ships = ['Ship41', 'Ship31', 'Ship32', 'Ship21', 'Ship22', 'Ship23', 'Ship11', 'Ship12', 'Ship13', 'Ship14' ];
         this.shipElements = {};
         this.boundariesOfShip = {};
+        this.positionsOfShip = {};
 
         this.selectedChild = null;
         this.originalLeftOfShip = null;
@@ -23,6 +24,7 @@ export class PlaceShips{
         this.fillShipsInMyGrid(playerGrid);
         this.addListenersToShips();
         this.getInitialBoundaries();
+        this.addEventListenerToPlayBtn();
     }
 
     fillShipsInMyGrid(playerGrid){
@@ -133,8 +135,8 @@ export class PlaceShips{
         a = x.a; b = x.b; let c = x.c; let d = x.d;
 
         // if the a and b are of the values in the
-        // range of boundaries then place it where
-        // it originally was, only change the position if the 
+        // range of boundaries then place it where it originally was
+        // only change the position of the selected ship if the 
         // values are not in the range of boundaries
         if(this.checkIfShipIsInOtherShipsTerritory(a, b) === true){
 
@@ -191,31 +193,79 @@ export class PlaceShips{
     }
 
     checkIfShipIsInOtherShipsTerritory(left , top){
-
-        const boundsOfChild = this.selectedChild.getBoundingClientRect();   
-        let leftTopCorner = [left , top];
-        let rightTopCorner = [left + boundsOfChild.width, top];
-        let leftBottomCorner = [left , top + boundsOfChild.height];
-        let rightBottomCorner = [left + boundsOfChild.width, top + boundsOfChild.height];
+        const boundsOfChild = this.selectedChild.getBoundingClientRect();
         
-        if( (this.checkIfPointIsInAnyShipArea(leftTopCorner)    ||
-            this.checkIfPointIsInAnyShipArea(rightTopCorner)    ||
-            this.checkIfPointIsInAnyShipArea(leftBottomCorner)  ||
-            this.checkIfPointIsInAnyShipArea(rightBottomCorner)) === true
-         )  return true;
+        let direction;
+                
+        if(boundsOfChild.width/this.gridSize > 1) direction = 'horizontal';
+        if(boundsOfChild.height/this.gridSize > 1) direction = 'vertical';
+        
+        // direction for a ship with length as 1 can be either horizontal or vertical
+        if((boundsOfChild.width/this.gridSize === 1) && (boundsOfChild.height/this.gridSize === 1)) direction = 'horizontal';
+        
+        let arrayContainingPoints = [];
+        let topLeftCorner = [left , top];
+        let topRightCorner = [left + boundsOfChild.width, top];
+        let bottomLeftCorner = [left , top + boundsOfChild.height];
+        
+        arrayContainingPoints.push(...this.getPointsOfCellsInTheShip(topLeftCorner, direction));
+        if(direction === 'horizontal'){
+            arrayContainingPoints.push(...this.getPointsOfCellsInTheShip(bottomLeftCorner, direction));
+        }else if(direction === 'vertical'){
+            arrayContainingPoints.push(...this.getPointsOfCellsInTheShip(topRightCorner, direction));
+        }
+        
+        for(let i = 0 ; i < arrayContainingPoints.length ; i++){
+            if(this.checkIfPointIsInAnyShipArea(arrayContainingPoints[i]) === true) return true;
+        }
 
-         return false;
+        return false;
     }
     
+    getPointsOfCellsInTheShip(initialPoint , direction){
+        let lengthOfShip = Number(this.selectedChild.id.slice(11,12));
+
+        //for reference initialPoint = [left,top]
+        let changeIndex;
+        let unChangedIndex;
+
+        if(direction === 'horizontal'){
+            changeIndex = 0; //change left
+            unChangedIndex = 1;
+        } 
+        if(direction === 'vertical'){
+            changeIndex = 1; //change top
+            unChangedIndex = 0;
+        } 
+ 
+        let pointsArray = [];
+        let changedIndexValue = initialPoint[changeIndex];
+
+        for(let i = 0 ; i <= lengthOfShip ; i++){
+            if(i === 0){
+                pointsArray[i] = initialPoint;
+            }else {
+                // always store array values in a variable(changedIndexValue) and then inject them back
+                // into an array, if not the refernece will cause the values to stay same
+                if(direction === 'horizontal'){
+                    changedIndexValue = changedIndexValue + 40;
+                    pointsArray[i] = [changedIndexValue , initialPoint[unChangedIndex]];
+                }else if(direction === 'vertical'){
+                    changedIndexValue = changedIndexValue + 40;
+                    pointsArray[i] = [initialPoint[unChangedIndex] , changedIndexValue];
+                }
+            }
+        }
+  
+        return pointsArray;
+    }
+
     checkIfPointIsInAnyShipArea([left , top]){
         let shipIds = Object.keys(this.boundariesOfShip);
         let shipBoundaries = Object.values(this.boundariesOfShip);
 
         for(let i = 0 ; i < shipBoundaries.length ; i++){
-            if(this.selectedChild.id.slice(7) === shipIds[i]){
-                console.log(`skipped ${shipIds[i]}`);
-                continue;
-            }
+            if(this.selectedChild.id.slice(7) === shipIds[i]) continue;
             
             let leftB = shipBoundaries[i].leftB;
             let rightB = shipBoundaries[i].rightB;
@@ -228,11 +278,71 @@ export class PlaceShips{
             if(bottomB === 400) bottomB++ ;
 
             if(left > leftB && left < rightB && top > topB && top < bottomB){
-                
+        
                 return true;
             }
         }
 
         return false;
     }
+
+    addEventListenerToPlayBtn(){
+        const playBtn = document.getElementById(`${this.playerGrid}PlayBtn`);
+
+        playBtn.addEventListener("click" , this.getPositionsOfShips.bind(this));
+    }
+
+    getPositionsOfShips(){
+        let shipElements = Object.values(this.shipElements);
+        let shipIds = Object.keys(this.shipElements);
+
+        for(let i = 0 ; i < shipElements.length ; i++){
+            let styleMapOfShip = shipElements[i].computedStyleMap();
+            let left = styleMapOfShip.get('left').value;
+            let top = styleMapOfShip.get('top').value;
+            let widthOfShip = styleMapOfShip.get('width').value;
+            let heightOfShip = styleMapOfShip.get('height').value;
+            let lengthOfShip = Number(shipIds[i].slice(4,5));
+            
+            let x; let y; let direction;
+
+            if(left === 0) x = 0;
+            if(top === 0) y = 0;
+            if(left > 0 && left <= this.gridSize*9) x = left/this.gridSize;
+            if(top > 0 && top <= this.gridSize*9) y = top/this.gridSize;
+            if(lengthOfShip > 1){
+                if((widthOfShip/this.gridSize) > 1){
+                    direction = 'horizontal';
+                }else if((heightOfShip/this.gridSize) > 1){
+                    direction = 'vertical';
+                }
+            }
+
+            let cellsContainingShipArray = [];
+            
+            for(let j = 0 ; j < lengthOfShip ; j++){
+                if(j === 0){
+                    cellsContainingShipArray[j] = {x,y};
+                }else {
+                    if(direction === 'horizontal'){
+                        x++;
+                        cellsContainingShipArray[j] = {x,y};
+                    }else if(direction === 'vertical'){
+                        y++;
+                        cellsContainingShipArray[j] = {x,y};
+                    }
+                }
+            }
+            
+            this.positionsOfShip[shipIds[i]] = cellsContainingShipArray;       
+        }
+
+        const playBtn = document.getElementById(`${this.playerGrid}PlayBtn`);
+        playBtn.style.backgroundColor = "lightGreen";
+    }
+    
+    // add an event listener to the play button and record the ships place
+    // disable all the event listeners on the ships and mouse move and mouse up events on the document
+    // send the ships data to whomever needs it
+    // display the opponents ship and add interactivity to each cell
 }

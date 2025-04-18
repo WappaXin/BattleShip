@@ -1,4 +1,4 @@
-const boundariesOfShip = require("./../src/js/testFunctions");
+const getPointsOfCellsInTheShip = require("./../src/js/testFunctions");
 
 test('boundaries of the ship, stuck to left border of the parent' , () => {
     expect(boundariesOfShip(0 , 120)).toMatchObject({
@@ -63,3 +63,37 @@ test('boundaries of the ship, near border in 1 cell' , () => {
         bottomB: 400
     })
 })
+
+test.only('get co-ordinates of the every corner in a cell in a ship , vertical' , () => {
+    expect(getPointsOfCellsInTheShip( [40,200] , 'vertical' , 4)).toEqual([
+        [40,200] ,
+        [40,240] ,
+        [40,280] , 
+        [40,320] , 
+        [40,360]]
+    )
+});
+
+test.only('get co-ordinates of the every corner in a cell in a ship , horizontal' , () => {
+    expect(getPointsOfCellsInTheShip( [40,200] , 'horizontal' , 4)).toEqual([
+        [40,200] ,
+        [80,200] ,
+        [120,200] , 
+        [160,200] , 
+        [200,200]]
+    )
+});
+
+test.only('get co-ordinates of the every corner in a cell in a ship , vertical , length = 1' , () => {
+    expect(getPointsOfCellsInTheShip( [40,200] , 'vertical' , 1)).toEqual([
+        [40,200] ,
+        [40,240]]
+    )
+});
+
+test.only('get co-ordinates of the every corner in a cell in a ship , horizontal , length = 1' , () => {
+    expect(getPointsOfCellsInTheShip( [40,200] , 'horizontal' , 1)).toEqual([
+        [40,200] ,
+        [80,200]]
+    )
+});

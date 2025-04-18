@@ -1,4 +1,5 @@
 import { Ship } from "./ship";
+import { PlaceShips } from "./placeShips";
 
 export class GameBoard{
     constructor(){
