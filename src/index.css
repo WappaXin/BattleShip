@@ -46,10 +46,10 @@ body{
     border: 1px solid blue;
     position: relative;
 }
-
+/* 
 .opponentGrid1 , .opponentGrid2 {
     border: 2px solid red;
-}
+} */
 
 #player1PlayBtn , #player2PlayBtn{
     font-size: 1.5rem;

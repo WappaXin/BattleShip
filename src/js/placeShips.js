@@ -6,7 +6,6 @@ export class PlaceShips{
         this.ships = ['Ship41', 'Ship31', 'Ship32', 'Ship21', 'Ship22', 'Ship23', 'Ship11', 'Ship12', 'Ship13', 'Ship14' ];
         this.shipElements = {};
         this.boundariesOfShip = {};
-        this.positionsOfShip = {};
 
         this.selectedChild = null;
         this.originalLeftOfShip = null;
@@ -17,14 +16,13 @@ export class PlaceShips{
         this.parentElement = document.querySelector(`.${this.playerGrid}`);
         this.boundsOfParent = this.parentElement.getBoundingClientRect();
 
-        this.mousedownHandler;
+        this.mousedownHandler = this.mousedown.bind(this);
         this.mousemoveHandler;
         this.mouseupHandler;
         
         this.fillShipsInMyGrid(playerGrid);
         this.addListenersToShips();
         this.getInitialBoundaries();
-        this.addEventListenerToPlayBtn();
     }
 
     fillShipsInMyGrid(playerGrid){
@@ -81,7 +79,7 @@ export class PlaceShips{
 
         for(let i = 0 ; i < shipIds.length ; i++){
             this.shipElements[this.ships[i]] = document.getElementById(`${shipIds[i]}`);
-            this.shipElements[this.ships[i]].addEventListener("mousedown" , this.mousedownHandler = this.mousedown.bind(this));
+            this.shipElements[this.ships[i]].addEventListener("mousedown" , this.mousedownHandler);
         }
     }
 
@@ -286,15 +284,10 @@ export class PlaceShips{
         return false;
     }
 
-    addEventListenerToPlayBtn(){
-        const playBtn = document.getElementById(`${this.playerGrid}PlayBtn`);
-
-        playBtn.addEventListener("click" , this.getPositionsOfShips.bind(this));
-    }
-
     getPositionsOfShips(){
         let shipElements = Object.values(this.shipElements);
         let shipIds = Object.keys(this.shipElements);
+        let positionsOfShip = {};
 
         for(let i = 0 ; i < shipElements.length ; i++){
             let styleMapOfShip = shipElements[i].computedStyleMap();
@@ -319,30 +312,32 @@ export class PlaceShips{
             }
 
             let cellsContainingShipArray = [];
+            cellsContainingShipArray[0] = {x,y};
             
-            for(let j = 0 ; j < lengthOfShip ; j++){
-                if(j === 0){
+            for(let j = 1 ; j < lengthOfShip ; j++){
+                if(direction === 'horizontal'){
+                    x++;
                     cellsContainingShipArray[j] = {x,y};
-                }else {
-                    if(direction === 'horizontal'){
-                        x++;
-                        cellsContainingShipArray[j] = {x,y};
-                    }else if(direction === 'vertical'){
-                        y++;
-                        cellsContainingShipArray[j] = {x,y};
-                    }
+                }else if(direction === 'vertical'){
+                    y++;
+                    cellsContainingShipArray[j] = {x,y};
                 }
             }
             
-            this.positionsOfShip[shipIds[i]] = cellsContainingShipArray;       
+            positionsOfShip[shipIds[i]] = cellsContainingShipArray;       
         }
 
-        const playBtn = document.getElementById(`${this.playerGrid}PlayBtn`);
-        playBtn.style.backgroundColor = "lightGreen";
+        return positionsOfShip;
+    }
+
+    disableAllEventListenersForMyGrid(){
+        for(let i = 0 ; i < this.ships.length ; i++){
+            console.log(this.shipElements[this.ships[i]]);
+            this.shipElements[this.ships[i]].removeEventListener("mousedown" , this.mousedownHandler);
+            // removing mousemove and mouseup listeners, just for safety
+            this.shipElements[this.ships[i]].removeEventListener("mousemove" , this.mousemoveHandler);
+            this.shipElements[this.ships[i]].removeEventListener("mouseup" , this.mouseupHandler);
+        }
     }
     
-    // add an event listener to the play button and record the ships place
-    // disable all the event listeners on the ships and mouse move and mouse up events on the document
-    // send the ships data to whomever needs it
-    // display the opponents ship and add interactivity to each cell
 }
