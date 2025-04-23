@@ -15,6 +15,7 @@ export class Dom{
         this.gameController = null;
         this.player1Handler = this.playRoundByPlayer1.bind(this);
         this.player2Handler = this.playRoundByPlayer2.bind(this);
+        this.screenBlockHandlerRef = this.screenBlockHandler.bind(this);
     }
 
     fillGrid(string){
@@ -29,18 +30,91 @@ export class Dom{
         }
     }
 
+    enableScreenBlockForWholeScreen(){
+        const screenBlock = document.getElementById("blockWholeScreen");
+
+        screenBlock.style.position = "absolute";
+        screenBlock.style.top = "0";
+        screenBlock.style.left = "0";
+        screenBlock.style.height = "100vh";
+        screenBlock.style.width = "100vw";
+        screenBlock.style.backgroundColor = "white";
+        screenBlock.style.zIndex = "30";
+        screenBlock.style.duration = "1s";
+        screenBlock.textContent = "Press Enter if it's your turn";
+        screenBlock.style.textAlign = "center";
+        screenBlock.style.padding = "45vh";
+        screenBlock.style.fontSize = "4rem";
+
+        document.addEventListener("keydown" , this.screenBlockHandlerRef )
+    }
+
+    screenBlockHandler(e){
+        if(e.code === "Enter"){
+            this.disableScreenBlockForWholeScreen();
+        }
+    }
+
+    disableScreenBlockForWholeScreen(){
+        const screenBlock = document.getElementById("blockWholeScreen");
+
+        screenBlock.style.height = "0px";
+        screenBlock.style.width = "0px";
+        screenBlock.style.backgroundColor = "transparent";
+        screenBlock.style.zIndex = "0";
+        screenBlock.textContent = "";
+
+        document.removeEventListener("keydown" , this.screenBlockHandlerRef);
+    }
+
+    enableScreenBlockForPlayerScreen(playerNum){
+        const screenBlockPlayer = document.getElementById(`player${playerNum}ScreenBlock`);
+
+        screenBlockPlayer.style.position = "absolute";
+        if(playerNum === 1){
+            screenBlockPlayer.style.top = "0";
+            screenBlockPlayer.style.left = "0";
+        }else if(playerNum === 2){
+            screenBlockPlayer.style.right = "0";
+            screenBlockPlayer.style.bottom = "0";
+        }
+
+        screenBlockPlayer.style.height = "50vh";
+        screenBlockPlayer.style.width = "100vw";
+        screenBlockPlayer.style.backgroundColor = "white";
+        screenBlockPlayer.style.zIndex = "20";
+    }
+
+    disableScreenBlockForPlayerScreen(playerNum){
+        const screenBlockPlayer = document.getElementById(`player${playerNum}ScreenBlock`);
+
+        screenBlockPlayer.style.height = "0px";
+        screenBlockPlayer.style.width = "0px";
+        screenBlockPlayer.style.backgroundColor = "transparent";
+        screenBlockPlayer.style.zIndex = "0";
+    }
+
     addEventListenerToPlayBtn(){
         const playBtn1 = document.getElementById("myGrid1PlayBtn");
         const playBtn2 = document.getElementById("myGrid2PlayBtn");
         const randomBtn1 = document.getElementById("myGrid1RandomPositionsOfShip");
         const randomBtn2 = document.getElementById("myGrid2RandomPositionsOfShip");
+        const playBtnSuggestion1 = document.querySelector(".player1 > .details > p");
+        const playBtnSuggestion2 = document.querySelector(".player2 > .details > p");
+
+        playBtn2.disabled = true;
+        randomBtn2.disabled = true;
 
         playBtn1.addEventListener("click" , () => {
             this.positionOfShips1 = this.placeShips1.getPositionsOfShips();
             this.placeShips1.disableAllEventListenersForMyGrid();
             this.player1Ready = true;
-            playBtn1.disabled = true;
-            randomBtn1.disabled = true;
+            playBtn1.remove();
+            randomBtn1.remove();
+            playBtn2.disabled = false;
+            randomBtn2.disabled = false;
+            playBtnSuggestion1.textContent = "";
+            this.enableScreenBlockForPlayerScreen(1);
             this.checkToStartGame();
         });
 
@@ -48,8 +122,12 @@ export class Dom{
             this.positionOfShips2 = this.placeShips2.getPositionsOfShips();
             this.placeShips2.disableAllEventListenersForMyGrid();
             this.player2Ready = true;
-            playBtn2.disabled = true;
-            randomBtn2.disabled = true;
+            playBtn2.remove();
+            randomBtn2.remove();
+            playBtnSuggestion2.textContent = "";
+            this.enableScreenBlockForWholeScreen();
+            this.disableScreenBlockForPlayerScreen(1);
+            this.enableScreenBlockForPlayerScreen(2);
             this.checkToStartGame();   
         });
     }
@@ -127,7 +205,7 @@ export class Dom{
         cellInMyGrid1.style.backgroundColor = "rgba(254, 246, 0, 0.48)";
     }
 
-    playRoundByPlayer1(e){
+    async playRoundByPlayer1(e){
         if(e.target.classList.contains("opponentGrid1Cell")){
             const xAndYArray = e.target.dataset.coOrdinate.split('');
             const x = Number(xAndYArray[0]);
@@ -139,17 +217,23 @@ export class Dom{
                 this.addEventListenerToOpponentGrid2();
                 this.removeListenerOnOpponentGrid1();
                 this.changeColorOfCellWhilePlayer1Bombs(x,y);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.enableScreenBlockForWholeScreen();
+                this.enableScreenBlockForPlayerScreen(1);
+                this.disableScreenBlockForPlayerScreen(2);
                 return;
             }
 
             this.changeColorOfCellWhilePlayer1Bombs(x,y)
             this.displayWinner(roundResult);
             this.removeListenerOnOpponentGrid1();
+            this.disableScreenBlockForWholeScreen();
+            this.disableScreenBlockForPlayerScreen(2);
             return;
         }
     }
 
-    playRoundByPlayer2(e){
+    async playRoundByPlayer2(e){
         if(e.target.classList.contains("opponentGrid2Cell")){
             const xAndYArray = e.target.dataset.coOrdinate.split('');
             const x = Number(xAndYArray[0]);
@@ -161,12 +245,18 @@ export class Dom{
                 this.addEventListenerToOpponentGrid1();
                 this.removeListenerOnOpponentGrid2();
                 this.changeColorOfCellWhilePlayer2Bombs(x,y);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.enableScreenBlockForWholeScreen();
+                this.enableScreenBlockForPlayerScreen(2);
+                this.disableScreenBlockForPlayerScreen(1);
                 return;
             }
 
             this.changeColorOfCellWhilePlayer2Bombs(x,y);
             this.displayWinner(roundResult);
             this.removeListenerOnOpponentGrid2();
+            this.disableScreenBlockForWholeScreen();
+            this.disableScreenBlockForPlayerScreen(1);
             return;
         }
     }
@@ -182,5 +272,17 @@ export class Dom{
             player2GameStatus.textContent = 'You won!!';
             player1GameStatus.textContent = 'You lost!';
         }
+
+        player1GameStatus.style.fontSize = "3rem";
+        player2GameStatus.style.fontSize = "3rem";
+
+        const passAndPlayPageLink = document.createElement("a");
+        const playAgainBtn = document.createElement("button");
+        const player1DetailsDiv = document.querySelector(".player1 > .details");
+        
+        passAndPlayPageLink.href = "./../passAndPlay.html";
+        passAndPlayPageLink.textContent = "Play Again";
+        playAgainBtn.appendChild(passAndPlayPageLink);
+        player1DetailsDiv.appendChild(playAgainBtn);
     }
 }
