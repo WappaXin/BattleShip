@@ -6,19 +6,33 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     mode: "development",
-    entry: "./src/index.js",
+    entry: {
+        passAndPlay: "./src/passAndPlay.js",
+        playComputer: "./src/playComputer.js"
+    },
     output: {
-        filename: "main.js",
+        filename: "[name].js",
         path: path.resolve(__dirname, "dist"),
         clean: true,
     },
     devtool: "eval-source-map",
     devServer: {
-        watchFiles: ["./src/template.html"],
+        watchFiles: ["./src/index.html" , "./src/passAndPlay.html" , "./src/playComputer.js"],
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template:"./src/template.html",
+            filename:"index.html",
+            template:"./src/index.html",
+        }),
+        new HtmlWebpackPlugin({
+            filename: "passAndPlay.html",
+            template: "./src/passAndPlay.html",
+            chunks: ["passAndPlay"]
+        }),
+        new HtmlWebpackPlugin({
+            filename: "playComputer.html",
+            template: "./src/playComputer.html",
+            chunks: ["playComputer"]
         }),
         new MiniCssExtractPlugin({
             filename: "main.css",
