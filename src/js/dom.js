@@ -32,12 +32,15 @@ export class Dom{
     addEventListenerToPlayBtn(){
         const playBtn1 = document.getElementById("myGrid1PlayBtn");
         const playBtn2 = document.getElementById("myGrid2PlayBtn");
+        const randomBtn1 = document.getElementById("myGrid1RandomPositionsOfShip");
+        const randomBtn2 = document.getElementById("myGrid2RandomPositionsOfShip");
 
         playBtn1.addEventListener("click" , () => {
             this.positionOfShips1 = this.placeShips1.getPositionsOfShips();
             this.placeShips1.disableAllEventListenersForMyGrid();
             this.player1Ready = true;
             playBtn1.disabled = true;
+            randomBtn1.disabled = true;
             this.checkToStartGame();
         });
 
@@ -46,6 +49,7 @@ export class Dom{
             this.placeShips2.disableAllEventListenersForMyGrid();
             this.player2Ready = true;
             playBtn2.disabled = true;
+            randomBtn2.disabled = true;
             this.checkToStartGame();   
         });
     }

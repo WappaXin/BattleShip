@@ -46,10 +46,6 @@ body{
     border: 1px solid blue;
     position: relative;
 }
-/* 
-.opponentGrid1 , .opponentGrid2 {
-    border: 2px solid red;
-} */
 
 #player1PlayBtn , #player2PlayBtn{
     font-size: 1.5rem;
@@ -60,4 +56,17 @@ body{
 .details > p{
     font-size: 1.2rem;
     margin-top: 20px;
+}
+
+.myGrid1Ship , .myGrid2Ship{
+    background-color: white;
+    border: 2px solid rgb(1, 1, 214);
+}
+
+.myGrid1Cell , .myGrid2Cell{
+    border: 1px solid rgba(0, 0, 255, 0.2);
+}
+
+.opponentGrid1Cell , .opponentGrid2Cell{
+    border: 1px solid rgba(255, 0, 0, 0.2);    
 }

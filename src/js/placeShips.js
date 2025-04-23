@@ -1,3 +1,5 @@
+import { getRandomPositionsOfShips } from "./randomShipPositions";
+
 export class PlaceShips{
 
     constructor(playerGrid){
@@ -19,20 +21,78 @@ export class PlaceShips{
         this.mousedownHandler = this.mousedown.bind(this);
         this.mousemoveHandler;
         this.mouseupHandler;
+        this.randomBtnHandler = this.generateShipElements.bind(this);
         
-        this.fillShipsInMyGrid(playerGrid);
+        this.addEventListenerToRandomiseShipPositionsBtn();
+        this.generateShipElements();
+    }
+
+    addEventListenerToRandomiseShipPositionsBtn(){
+        const randomShipPositionsBtn = document.getElementById(`${this.playerGrid}RandomPositionsOfShip`);
+        randomShipPositionsBtn.addEventListener("click" , this.randomBtnHandler )
+    }
+
+    deleteShipsIfPresent(){
+        let allShipsInMyGrid = document.querySelectorAll(`.${this.playerGrid}Ship`);
+        allShipsInMyGrid = Array.from(allShipsInMyGrid);
+
+        for(let i = 0 ; i < allShipsInMyGrid.length ; i++){
+            if(allShipsInMyGrid[i]){
+                allShipsInMyGrid[i].remove();
+            }
+        }
+    }
+
+    generateShipElements(){
+        this.deleteShipsIfPresent();
+        const positionsOfShip = getRandomPositionsOfShips();
+        const classString = this.playerGrid;
+        const shipNames = Object.keys(positionsOfShip);
+        const shipPoints = Object.values(positionsOfShip);
+        let direction;
+    
+        console.log(shipNames);
+        console.log(shipPoints);
+    
+        for(let i = 0 ; i < shipNames.length ; i++){
+            if(shipPoints[i].length === 1){
+                direction = 'horizontal';
+            }else if(shipPoints[i][0].x === shipPoints[i][1].x){
+                direction = 'vertical';
+            }else if(shipPoints[i][0].y === shipPoints[i][1].y){
+                direction = 'horizontal';
+            }
+    
+            const div = document.createElement("div");
+            div.classList.add(`${classString}Ship`);
+            div.id = `${classString}${shipNames[i]}`;
+    
+            if(direction === 'vertical'){
+                div.style.width = `${this.gridSize}px`;
+                div.style.height = `${this.gridSize*shipPoints[i].length}px`;
+            }else if(direction === 'horizontal'){
+                div.style.width = `${this.gridSize*shipPoints[i].length}px`;
+                div.style.height = `${this.gridSize}px`;
+            }
+    
+            div.style.position = "absolute";
+            div.style.left = `${shipPoints[i][0].x*this.gridSize}px`;
+            div.style.top = `${shipPoints[i][0].y*this.gridSize}px`;
+            this.parentElement.appendChild(div);
+        }
+
         this.addListenersToShips();
         this.getInitialBoundaries();
     }
 
-    fillShipsInMyGrid(playerGrid){
-        const myGrid = document.querySelector(`.${playerGrid}`);
+    addListenersToShips(){
+        const shipIds = this.ships.map((element) => {
+            return `${this.playerGrid}` + element;
+        })
 
-        for(let i = 0 ; i < this.ships.length ; i++){
-            const div = document.createElement("div");
-            div.classList.add(`${playerGrid}Ship`);
-            div.id = `${playerGrid}${this.ships[i]}`;
-            myGrid.appendChild(div);
+        for(let i = 0 ; i < shipIds.length ; i++){
+            this.shipElements[this.ships[i]] = document.getElementById(`${shipIds[i]}`);
+            this.shipElements[this.ships[i]].addEventListener("mousedown" , this.mousedownHandler);
         }
     }
 
@@ -70,17 +130,6 @@ export class PlaceShips{
         if(topB < 0) topB = 0;
     
         return { leftB: leftB ,  rightB: rightB , topB: topB , bottomB: bottomB};
-    }
-
-    addListenersToShips(){
-        const shipIds = this.ships.map((element) => {
-            return `${this.playerGrid}` + element;
-        })
-
-        for(let i = 0 ; i < shipIds.length ; i++){
-            this.shipElements[this.ships[i]] = document.getElementById(`${shipIds[i]}`);
-            this.shipElements[this.ships[i]].addEventListener("mousedown" , this.mousedownHandler);
-        }
     }
 
     mousedown(e){

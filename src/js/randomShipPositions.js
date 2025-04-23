@@ -87,7 +87,7 @@ function checkIfTwoPointsAreEqual(pointOne , pointTwo){
     return false;
 }
 
-function getRandomPositionsOfShips(){
+export function getRandomPositionsOfShips(){
     let positionsOfShip = {};
     let shipAndBorderCells = [];
 
@@ -128,44 +128,3 @@ function getRandomPositionsOfShips(){
     console.log(shipAndBorderCells);
     return positionsOfShip;
 }
-
-function generateShipElements(positionsOfShip , classString){
-    const shipNames = Object.keys(positionsOfShip);
-    const shipPoints = Object.values(positionsOfShip);
-    const containerDiv = document.querySelector(".container");
-    let gridSize = 40;
-    let direction;
-
-    console.log(shipNames);
-    console.log(shipPoints);
-
-    for(let i = 0 ; i < shipNames.length ; i++){
-        if(shipPoints[i].length === 1){
-            direction = 'horizontal';
-        }else if(shipPoints[i][0].x === shipPoints[i][1].x){
-            direction = 'vertical';
-        }else if(shipPoints[i][0].y === shipPoints[i][1].y){
-            direction = 'horizontal';
-        }
-
-        const div = document.createElement("div");
-        div.classList.add(`${classString}Ship`);
-        div.id = `${classString}${shipNames[i]}`;
-
-        if(direction === 'vertical'){
-            div.style.width = `${gridSize}px`;
-            div.style.height = `${gridSize*shipPoints[i].length}px`;
-        }else if(direction === 'horizontal'){
-            div.style.width = `${gridSize*shipPoints[i].length}px`;
-            div.style.height = `${gridSize}px`;
-        }
-
-        div.style.position = "absolute";
-        div.style.left = `${shipPoints[i][0].x*gridSize}px`;
-        div.style.top = `${shipPoints[i][0].y*gridSize}px`;
-        containerDiv.appendChild(div);
-    }
-
-}
-
-generateShipElements(getRandomPositionsOfShips());
