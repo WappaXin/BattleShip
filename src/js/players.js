@@ -6,9 +6,4 @@ export class Player{
         this.playersBoard = new GameBoard(); 
     }
 
-    // step(){
-    //     if(this.playerType === 'computer'){
-            
-    //     }
-    // }
 }

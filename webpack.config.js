@@ -17,7 +17,7 @@ module.exports = {
     },
     devtool: "eval-source-map",
     devServer: {
-        watchFiles: ["./src/index.html" , "./src/passAndPlay.html" , "./src/playComputer.js"],
+        watchFiles: ["./src/index.html" , "./src/passAndPlay.html" , "./src/playComputer.html"],
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -35,7 +35,7 @@ module.exports = {
             chunks: ["playComputer"]
         }),
         new MiniCssExtractPlugin({
-            filename: "main.css",
+            filename: "[name].css",
         })
     ],
     module: {

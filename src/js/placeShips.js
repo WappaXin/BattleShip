@@ -23,8 +23,8 @@ export class PlaceShips{
         this.mouseupHandler;
         this.randomBtnHandler = this.generateShipElements.bind(this);
         
-        this.addEventListenerToRandomiseShipPositionsBtn();
         this.generateShipElements();
+        this.addEventListenerToRandomiseShipPositionsBtn();
     }
 
     addEventListenerToRandomiseShipPositionsBtn(){
@@ -51,8 +51,8 @@ export class PlaceShips{
         const shipPoints = Object.values(positionsOfShip);
         let direction;
     
-        console.log(shipNames);
-        console.log(shipPoints);
+        // console.log(shipNames);
+        // console.log(shipPoints);
     
         for(let i = 0 ; i < shipNames.length ; i++){
             if(shipPoints[i].length === 1){
@@ -80,7 +80,7 @@ export class PlaceShips{
             div.style.top = `${shipPoints[i][0].y*this.gridSize}px`;
             this.parentElement.appendChild(div);
         }
-
+        
         this.addListenersToShips();
         this.getInitialBoundaries();
     }
@@ -99,6 +99,7 @@ export class PlaceShips{
     getInitialBoundaries(){
         let shipElements = Object.values(this.shipElements);
         let shipIds = Object.keys(this.shipElements);
+        console.log(shipIds);
 
         for(let i = 0 ; i < shipElements.length ; i++){
             let styleMapOfShip = shipElements[i].computedStyleMap();
@@ -108,6 +109,7 @@ export class PlaceShips{
 
             this.boundariesOfShip[shipIds[i]] = this.getBoundariesOfShip(leftOfShipFromParentBorder , topOfShipFromParentBorder, shipElements[i]);
         }
+        console.log(this.boundariesOfShip);
     }
 
     getBoundariesOfShip(left , top , selectedChild){
@@ -208,6 +210,8 @@ export class PlaceShips{
         this.selectedChild = null;
         this.originalLeftOfShip = null;
         this.originalTopOfShip= null;
+        console.log(this.boundariesOfShip);
+        console.log(this.shipElements);
     }
 
     getLeftAndTopDistanceDuringMouseup(a , b){
@@ -376,12 +380,12 @@ export class PlaceShips{
             positionsOfShip[shipIds[i]] = cellsContainingShipArray;       
         }
 
+        console.log(positionsOfShip);
         return positionsOfShip;
     }
 
     disableAllEventListenersForMyGrid(){
         for(let i = 0 ; i < this.ships.length ; i++){
-            console.log(this.shipElements[this.ships[i]]);
             this.shipElements[this.ships[i]].removeEventListener("mousedown" , this.mousedownHandler);
             // removing mousemove and mouseup listeners, just for safety
             this.shipElements[this.ships[i]].removeEventListener("mousemove" , this.mousemoveHandler);

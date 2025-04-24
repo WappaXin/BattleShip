@@ -70,3 +70,7 @@ body{
 .opponentGrid1Cell , .opponentGrid2Cell{
     border: 1px solid rgba(255, 0, 0, 0.2);
 }
+
+#myGrid1RandomPositionsOfShip , #myGrid2RandomPositionsOfShip{
+    margin: 10px 0;
+}

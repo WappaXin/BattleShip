@@ -124,7 +124,7 @@ export function getRandomPositionsOfShips(){
         shipAndBorderCells.push(...[...allPointsOfShip, ...borderCellsOfShip]);
     }
 
-    console.log(positionsOfShip);
-    console.log(shipAndBorderCells);
+    // console.log(positionsOfShip);
+    // console.log(shipAndBorderCells);
     return positionsOfShip;
 }
