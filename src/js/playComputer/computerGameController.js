@@ -1,4 +1,4 @@
-import { Player } from "./players";
+import { Player } from "./../players";
 import { computerAttackSystem } from "./computerAttack"; 
 
 export class GameControllerPlayingWithComputer{

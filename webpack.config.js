@@ -8,8 +8,8 @@ module.exports = {
     mode: "development",
     entry: {
         indexStyleOnly: "./src/js/indexStyleOnly.js",
-        passAndPlay: "./src/passAndPlay.js",
-        playComputer: "./src/playComputer.js"
+        passAndPlay: "./src/js/passAndPlay/passAndPlay.js",
+        playComputer: "./src/js/playComputer/playComputer.js"
     },
     output: {
         filename: "[name].js",

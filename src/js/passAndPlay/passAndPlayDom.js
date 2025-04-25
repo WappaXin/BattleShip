@@ -1,5 +1,5 @@
 import {GameController} from "./gameController";
-import { PlaceShips } from "./placeShips";
+import { PlaceShips } from "./../placeShips";
 
 export class Dom{
     constructor(){

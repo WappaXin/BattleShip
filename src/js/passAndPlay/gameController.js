@@ -1,4 +1,4 @@
-import { Player } from "./players";
+import { Player } from "../players";
 
 export class GameController{
     constructor(player1ShipPositions, player2ShipPositions){

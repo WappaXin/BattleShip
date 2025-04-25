@@ -1,4 +1,4 @@
-import { PlaceShips } from "./placeShips";
+import { PlaceShips } from "./../placeShips";
 import {GameControllerPlayingWithComputer} from "./computerGameController";
 
 export class Dom{
