@@ -136,8 +136,8 @@ export class Dom{
         if((this.player1Ready && this.player2Ready) === true){
             const opponentGrid1 = document.querySelector(".opponentGrid1");
             const opponentGrid2 = document.querySelector(".opponentGrid2");
-            opponentGrid1.style.border = "2px solid red";
-            opponentGrid2.style.border = "2px solid red";
+            opponentGrid1.style.border = "1px solid red";
+            opponentGrid2.style.border = "1px solid red";
 
             this.fillGrid("opponentGrid1");
             this.fillGrid("opponentGrid2");
@@ -277,12 +277,12 @@ export class Dom{
         player2GameStatus.style.fontSize = "3rem";
 
         const passAndPlayPageLink = document.createElement("a");
-        const playAgainBtn = document.createElement("button");
         const player1DetailsDiv = document.querySelector(".player1 > .details");
         
         passAndPlayPageLink.href = "./../passAndPlay.html";
         passAndPlayPageLink.textContent = "Play Again";
-        playAgainBtn.appendChild(passAndPlayPageLink);
-        player1DetailsDiv.appendChild(playAgainBtn);
+        player1DetailsDiv.appendChild(passAndPlayPageLink);
+        passAndPlayPageLink.style.position = "relative";
+        passAndPlayPageLink.style.zIndex = "40";
     }
 }

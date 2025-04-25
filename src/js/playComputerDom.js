@@ -48,8 +48,8 @@ export class Dom{
             
             this.fillGrid("opponentGrid");
             this.fillGrid("humanGrid");
-            opponentGrid.style.border = "2px solid red";
-            humanGrid.style.border = "2px solid red";
+            opponentGrid.style.border = "1px solid red";
+            humanGrid.style.border = "1px solid red";
             
             this.placeShipsPlayer.disableAllEventListenersForMyGrid();
             e.target.remove();
@@ -84,6 +84,7 @@ export class Dom{
                 this.displayWinner("won");
                 this.removeEventListenerToOpponentGrid();
                 this.createPlayAgainBtn();
+                this.removeBlockScreen();
                 return;
             }
             if(roundStatus.roundResult === "computerWon"){
@@ -92,6 +93,7 @@ export class Dom{
                 this.displayWinner("lost");
                 this.removeEventListenerToOpponentGrid();
                 this.createPlayAgainBtn();
+                this.removeBlockScreen();
                 return;
             }
             if(roundStatus.roundResult === "nextRound"){
@@ -122,7 +124,7 @@ export class Dom{
         if(this.gameController.computerBoard.playersBoard.board[x][y].shipName !== null){
             opponentGridCell.style.backgroundColor = "rgba(254, 0, 34, 0.38)";
             computerGridCell.style.backgroundColor = "rgba(0, 230, 255, 0.38)";
-            computerGridCell.style.zIndex = "10";
+            computerGridCell.style.zIndex = "1";
             return;
         }
 
@@ -147,12 +149,16 @@ export class Dom{
 
     createPlayAgainBtn(){
         const playComputerPageLink = document.createElement("a");
-        const playAgainBtn = document.createElement("button");
         const playerDetailsDiv = document.querySelector(".player > .details");
         
         playComputerPageLink.href = "./../playComputer.html";
         playComputerPageLink.textContent = "Play Again";
-        playAgainBtn.appendChild(playComputerPageLink);
-        playerDetailsDiv.appendChild(playAgainBtn);
+        playerDetailsDiv.appendChild(playComputerPageLink);
+    }
+
+    removeBlockScreen(){
+        const blockScreenForComputer = document.getElementById("computerPlayAreaScreenBlock");
+
+        blockScreenForComputer.remove();
     }
 }

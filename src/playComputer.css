@@ -85,16 +85,18 @@ body{
     margin: 10px 0;
 }
 
-/* #computerPlayAreaScreenBlock{
+#computerPlayAreaScreenBlock{
     position: absolute;
     background-color: white;
     height: 50vh;
     width: 100vw;
-    right: 0;
+    left: 0;
     bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 3rem;
     padding: 20px;
-} */
+    border-top: 1px solid black;
+    z-index: 10;
+}

@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     mode: "development",
     entry: {
+        indexStyleOnly: "./src/js/indexStyleOnly.js",
         passAndPlay: "./src/passAndPlay.js",
         playComputer: "./src/playComputer.js"
     },
@@ -23,6 +24,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename:"index.html",
             template:"./src/index.html",
+            chunks: ["indexStyleOnly"]
         }),
         new HtmlWebpackPlugin({
             filename: "passAndPlay.html",
