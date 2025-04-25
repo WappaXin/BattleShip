@@ -1,0 +1,105 @@
+/*!****************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/css/playComputer.css ***!
+  \****************************************************************************/
+*{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+}
+
+.player , .computer{
+    height: 50%;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+}
+
+.player{
+    border-bottom: 1px solid black;
+}
+
+.computer{
+    border-top: 1px solid black;
+}
+
+.details , .grids{
+    height: 100%;
+    width: 50%;
+    padding: 5px;
+}
+
+.grids{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.details > p{
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+#myGridRandomPositionsOfShip{
+    margin: 20px 0;
+}
+
+#myGridPlayBtn{
+    margin-top: 5px ;
+}
+
+.myGrid0 , .opponentGrid , .computerGrid, .humanGrid{
+    height: 400px;
+    width: 400px;
+    flex: 0 0 auto;
+}
+
+.myGrid0 , .computerGrid{
+    border: 1px solid blue;
+}
+
+.myGrid0 , .computerGrid , .opponentGrid , .humanGrid{
+    display: grid;
+    grid-template-columns: repeat(10 , 40px);
+    grid-template-rows: repeat(10 , 40px);
+    box-sizing: content-box;
+    position: relative;
+    margin: 10px;
+}
+
+.myGrid0Cell , .computerGridCell{
+    border: 1px solid rgba(0, 0, 255, 0.2);
+}
+
+.opponentGridCell , .humanGridCell{
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.myGrid0Ship , .computerGridShip{
+    background-color: white;
+    border: 2px solid rgb(1, 1, 214);
+}
+
+#myGrid0RandomPositionsOfShip{
+    margin: 10px 0;
+}
+
+#computerPlayAreaScreenBlock{
+    position: absolute;
+    background-color: white;
+    height: 50vh;
+    width: 100vw;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 3rem;
+    padding: 20px;
+    border-top: 1px solid black;
+    z-index: 10;
+}

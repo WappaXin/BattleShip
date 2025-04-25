@@ -1,0 +1,79 @@
+/*!***************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/css/passAndPlay.css ***!
+  \***************************************************************************/
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+}
+
+.player1 , .player2{
+    height: 50%;
+    width: 100%;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: row;
+}
+
+.details, .grids{
+    height: 100%;
+    width: 50%;
+}
+
+.details{
+    padding: 10px;
+}
+
+.grids{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.myGrid1 , .opponentGrid1 , .myGrid2 , .opponentGrid2{
+    height: 400px;
+    width: 400px;
+    flex: 0 0 auto;
+    margin: 12px;
+    display: grid;
+    grid-template-columns: repeat(10 , 40px);
+    grid-template-rows: repeat(10 , 40px);
+}
+
+.myGrid1 , .myGrid2{
+    border: 1px solid blue;
+    position: relative;
+}
+
+#player1PlayBtn , #player2PlayBtn{
+    font-size: 1.5rem;
+    padding: 0.2rem 0.5rem;
+    margin-top: 5px;
+}
+
+.details > p{
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+.myGrid1Ship , .myGrid2Ship{
+    background-color: white;
+    border: 2px solid rgb(1, 1, 214);
+}
+
+.myGrid1Cell , .myGrid2Cell{
+    border: 1px solid rgba(0, 0, 255, 0.2);
+}
+
+.opponentGrid1Cell , .opponentGrid2Cell{
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+#myGrid1RandomPositionsOfShip , #myGrid2RandomPositionsOfShip{
+    margin: 10px 0;
+}
